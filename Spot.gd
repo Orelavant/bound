@@ -34,11 +34,11 @@ func _on_mouse_exited():
 func adj_spot_on(adj_spot_id_arr):
 	self.adj_spot_id_arr = adj_spot_id_arr
 	
-	if id in adj_spot_id_arr:
+	if in_pos_arr(id, adj_spot_id_arr):
 		texture_on()
 		
 func adj_spot_off(adj_spot_id_arr):
-	if id in adj_spot_id_arr:
+	if in_pos_arr(id, adj_spot_id_arr):
 		texture_off()
 	
 func spawn_piece():
@@ -49,3 +49,13 @@ func texture_on():
 
 func texture_off():
 	$Sprite2D.set_texture(null)
+	
+func in_pos_arr(id, adj_spot_id_arr):
+	for arr in adj_spot_id_arr:
+		var level = arr[0]
+		var pos = arr[1]
+		
+		if id[0] == level and id[1] == pos:
+			return true
+	
+	return false

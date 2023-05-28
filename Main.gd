@@ -37,8 +37,6 @@ func _process(_delta):
 	pass
 
 func _on_spot_clicked(id):
-	print(id)
-	
 	var level = id[0] 
 	var pos = id[1]
 	var mod_val = 5
@@ -65,8 +63,6 @@ func _on_spot_clicked(id):
 	var left_adj = [level, posmod((pos - 1), mod_val)]
 	var right_adj = [level, posmod((pos + 1), mod_val)]
 	var vert_adj = [level + level_change, pos + pos_change]
-	
-	print(left_adj, right_adj, vert_adj)
 	
 	adj_spots_on.emit([left_adj, right_adj, vert_adj])
 
