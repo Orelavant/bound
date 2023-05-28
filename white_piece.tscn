@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cvycgepbdrxxf"]
+
+[ext_resource type="Texture2D" uid="uid://crunxdkssvpnn" path="res://whitegopiece.png" id="1_u72eh"]
+
+[node name="WhitePiece" type="Sprite2D"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_u72eh")

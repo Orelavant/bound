@@ -1,0 +1,15 @@
+[gd_scene load_steps=6 format=3 uid="uid://datby7hdab087"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_epqpy"]
+[ext_resource type="PackedScene" uid="uid://duudc8ccdc0it" path="res://Board.tscn" id="1_nbrne"]
+[ext_resource type="PackedScene" uid="uid://dfsek52yfnq2m" path="res://BlackPiece.tscn" id="2_4wf7r"]
+[ext_resource type="PackedScene" uid="uid://cvycgepbdrxxf" path="res://white_piece.tscn" id="3_cqdvk"]
+[ext_resource type="PackedScene" uid="uid://mn2t6qeo7773" path="res://Spot.tscn" id="4_34e3h"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_epqpy")
+white_piece_scene = ExtResource("3_cqdvk")
+black_piece_scene = ExtResource("2_4wf7r")
+spot_scene = ExtResource("4_34e3h")
+
+[node name="Board" parent="." instance=ExtResource("1_nbrne")]

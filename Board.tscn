@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://duudc8ccdc0it"]
+
+[ext_resource type="Texture2D" uid="uid://cw0gpnwl1aqc3" path="res://bound.png" id="1_so0tt"]
+
+[node name="Board" type="TextureRect"]
+offset_right = 430.0
+offset_bottom = 449.0
+scale = Vector2(2, 2)
+texture = ExtResource("1_so0tt")

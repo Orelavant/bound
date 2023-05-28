@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfsek52yfnq2m"]
+
+[ext_resource type="Texture2D" uid="uid://c3m0sqq1nyam1" path="res://blackgopiece.png" id="1_o8ox8"]
+
+[node name="BlackPiece" type="Sprite2D"]
+position = Vector2(5.96046e-08, 5.96046e-08)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_o8ox8")
