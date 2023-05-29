@@ -1,11 +1,15 @@
 extends Node2D
 
-@export var white_piece_scene: PackedScene
-@export var black_piece_scene: PackedScene
 @export var spot_scene: PackedScene
+
+var prep_move = false
+var past_spot_id = []
+var had_stone = 0
+var curr_adj_spots = []
 
 signal adj_spots_on(adj_spot_id_arr)
 signal adj_spots_off(adj_spot_id_arr)
+signal move_to_spot(id, past_spot_id, had_stone)
 
 var spot_arr = [
 	[0, 0, Vector2(403, 410)],
@@ -30,13 +34,33 @@ var spot_arr = [
 	[2, 4, Vector2(114, 449)]
 ]
 
+
 func _ready():
 	spawn_spots()
+	
+	
+func _on_spot_clicked(id, has_stone):
+	# No stone has been clicked yet, stone has now been clicked
+	if !prep_move and has_stone > 0:
+		# TODO handle_adj_highlight has of turning on adj spots
+		curr_adj_spots = handle_adj_highlight(id)
+		
+		prep_move = true
+		past_spot_id = id
+		had_stone = has_stone
+		
+	# Stone has been clicked in the past, empty adj apot has now been clicked
+	elif prep_move and in_pos_arr(id, curr_adj_spots):
+		adj_spots_off.emit(curr_adj_spots)
+		move_to_spot.emit(id, past_spot_id, had_stone)
+		
+		curr_adj_spots = []
+		prep_move = false
+		past_spot_id = null
+		had_stone = 0
+		
 
-func _process(_delta):
-	pass
-
-func _on_spot_clicked(id):
+func handle_adj_highlight(id):
 	var level = id[0] 
 	var pos = id[1]
 	var mod_val = 5
@@ -64,10 +88,11 @@ func _on_spot_clicked(id):
 	var right_adj = [level, posmod((pos + 1), mod_val)]
 	var vert_adj = [level + level_change, pos + pos_change]
 	
-	adj_spots_on.emit([left_adj, right_adj, vert_adj])
-
-func _on_spot_mouse_left(adj_spot_arr):
-	adj_spots_off.emit(adj_spot_arr)
+	var adj_spots = [left_adj, right_adj, vert_adj]
+	adj_spots_on.emit(adj_spots)
+	
+	return adj_spots
+	
 	
 func spawn_spots():
 	for spot_info in spot_arr:
@@ -78,10 +103,15 @@ func spawn_spots():
 		spot.position = spot_info[2]
 		
 		spot.clicked.connect(_on_spot_clicked)
-		spot.mouse_left.connect(_on_spot_mouse_left)
 		add_child(spot)
+
+
+func in_pos_arr(id, adj_spot_id_arr):
+	for arr in adj_spot_id_arr:
+		var level = arr[0]
+		var pos = arr[1]
+		
+		if id[0] == level and id[1] == pos:
+			return true
 	
-	var black_piece = black_piece_scene.instantiate()
-	black_piece.position = Vector2(300, 300)
-	
-	add_child(black_piece)
+	return false
