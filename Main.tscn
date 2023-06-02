@@ -9,3 +9,5 @@ script = ExtResource("1_epqpy")
 spot_scene = ExtResource("4_34e3h")
 
 [node name="Board" parent="." instance=ExtResource("1_nbrne")]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]

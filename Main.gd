@@ -38,11 +38,12 @@ var spot_arr = [
 func _ready():
 	spawn_spots()
 	
+	$Music.play()
 	
 func _on_spot_clicked(id, has_stone):
 	# No stone has been clicked yet, stone has now been clicked
 	if !prep_move and has_stone > 0:
-		# TODO handle_adj_highlight has of turning on adj spots
+		# TODO handle_adj_highlight has sideeffect of turning on adj spots
 		curr_adj_spots = handle_adj_highlight(id)
 		
 		prep_move = true
@@ -50,7 +51,7 @@ func _on_spot_clicked(id, has_stone):
 		had_stone = has_stone
 		
 	# Stone has been clicked in the past, empty adj apot has now been clicked
-	elif prep_move and in_pos_arr(id, curr_adj_spots):
+	elif prep_move and in_pos_arr(id, curr_adj_spots) and has_stone == 0:
 		adj_spots_off.emit(curr_adj_spots)
 		move_to_spot.emit(id, past_spot_id, had_stone)
 		
@@ -99,7 +100,7 @@ func spawn_spots():
 		var spot = spot_scene.instantiate()
 		
 		# Set vars of spot
-		spot.id = [spot_info[0], spot_info[1]]
+		spot.my_id = [spot_info[0], spot_info[1]]
 		spot.position = spot_info[2]
 		
 		spot.clicked.connect(_on_spot_clicked)
