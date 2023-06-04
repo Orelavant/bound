@@ -11,7 +11,7 @@ signal adj_spots_on(adj_spot_id_arr)
 signal adj_spots_off(adj_spot_id_arr)
 signal move_to_spot(id, past_spot_id, had_stone)
 
-var spot_arr = [
+const spot_arr = [
 	[0, 0, Vector2(403, 410)],
 	[0, 1, Vector2(476, 391)],
 	[0, 2, Vector2(520, 456)],
@@ -34,6 +34,29 @@ var spot_arr = [
 	[2, 4, Vector2(114, 449)]
 ]
 
+# Key: position Value: [position has stone?, which adj spots have stones]
+@export var spot_info_dict = {
+	"00" : {},
+	"01" : {},
+	"02" : {},
+	"03" : {},
+	"04" : {},
+	"10" : {},
+	"11" : {},
+	"12" : {},
+	"13" : {},
+	"14" : {},
+	"15" : {},
+	"16" : {},
+	"17" : {},
+	"18" : {},
+	"19" : {},
+	"20" : {},
+	"21" : {},
+	"22" : {},
+	"23" : {},
+	"24" : {},
+}
 
 func _ready():
 	spawn_spots()
@@ -43,8 +66,8 @@ func _ready():
 func _on_spot_clicked(id, has_stone):
 	# No stone has been clicked yet, stone has now been clicked
 	if !prep_move and has_stone > 0:
-		# TODO handle_adj_highlight has sideeffect of turning on adj spots
-		curr_adj_spots = handle_adj_highlight(id)
+		curr_adj_spots = get_adj_spots(id)
+		adj_spots_on.emit(curr_adj_spots)
 		
 		prep_move = true
 		past_spot_id = id
@@ -55,13 +78,34 @@ func _on_spot_clicked(id, has_stone):
 		adj_spots_off.emit(curr_adj_spots)
 		move_to_spot.emit(id, past_spot_id, had_stone)
 		
+		# Update past adj spots
+		for spot_id in get_adj_spots(past_spot_id):
+			var spot_id_str = "".join(spot_id)
+			var past_spot_id_str = "".join(past_spot_id)
+			
+			if !spot_info_dict[spot_id_str].has(past_spot_id_str): # TODO Change this to happen at the start or make to func
+				spot_info_dict[spot_id_str][past_spot_id_str] = 1
+				
+			spot_info_dict[spot_id_str][past_spot_id_str] -= 1
+		
+		# Update curr adj spots
+		for spot_id in get_adj_spots(id):
+			var spot_id_str = "".join(spot_id)
+			var curr_spot_id_str = "".join(id)
+			
+			if !spot_info_dict[spot_id_str].has(curr_spot_id_str): # TODO Change this to happen at the start or make to func
+				spot_info_dict[spot_id_str][curr_spot_id_str] = 1
+				
+			spot_info_dict[spot_id_str][curr_spot_id_str] += 1
+		
+		# Clear past click TODO might have to clear past click each time regardless if a clear spot was clicked
 		curr_adj_spots = []
 		prep_move = false
 		past_spot_id = null
 		had_stone = 0
-		
 
-func handle_adj_highlight(id):
+
+func get_adj_spots(id):
 	var level = id[0] 
 	var pos = id[1]
 	var mod_val = 5
@@ -90,7 +134,6 @@ func handle_adj_highlight(id):
 	var vert_adj = [level + level_change, pos + pos_change]
 	
 	var adj_spots = [left_adj, right_adj, vert_adj]
-	adj_spots_on.emit(adj_spots)
 	
 	return adj_spots
 	

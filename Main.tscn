@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://datby7hdab087"]
+[gd_scene load_steps=5 format=3 uid="uid://datby7hdab087"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_epqpy"]
 [ext_resource type="PackedScene" uid="uid://duudc8ccdc0it" path="res://Board.tscn" id="1_nbrne"]
 [ext_resource type="PackedScene" uid="uid://mn2t6qeo7773" path="res://Spot.tscn" id="4_34e3h"]
+[ext_resource type="AudioStream" uid="uid://3h6uqtbpwoi2" path="res://forestMusic.wav" id="4_ep1av"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_epqpy")
@@ -11,3 +12,4 @@ spot_scene = ExtResource("4_34e3h")
 [node name="Board" parent="." instance=ExtResource("1_nbrne")]
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ep1av")
