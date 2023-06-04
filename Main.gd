@@ -35,7 +35,7 @@ const spot_arr = [
 ]
 
 # Key: position Value: [position has stone?, which adj spots have stones]
-@export var spot_info_dict = {
+var spot_info_dict = {
 	"00" : {},
 	"01" : {},
 	"02" : {},
@@ -84,9 +84,9 @@ func _on_spot_clicked(id, has_stone):
 			var past_spot_id_str = "".join(past_spot_id)
 			
 			if !spot_info_dict[spot_id_str].has(past_spot_id_str): # TODO Change this to happen at the start or make to func
-				spot_info_dict[spot_id_str][past_spot_id_str] = 1
-				
-			spot_info_dict[spot_id_str][past_spot_id_str] -= 1
+				spot_info_dict[spot_id_str][past_spot_id_str] = 0
+			else:
+				spot_info_dict[spot_id_str][past_spot_id_str] -= 1
 		
 		# Update curr adj spots
 		for spot_id in get_adj_spots(id):
@@ -95,8 +95,12 @@ func _on_spot_clicked(id, has_stone):
 			
 			if !spot_info_dict[spot_id_str].has(curr_spot_id_str): # TODO Change this to happen at the start or make to func
 				spot_info_dict[spot_id_str][curr_spot_id_str] = 1
-				
-			spot_info_dict[spot_id_str][curr_spot_id_str] += 1
+			else:
+				spot_info_dict[spot_id_str][curr_spot_id_str] += 1
+			
+			# check for game end condition
+			if spot_info_dict[spot_id_str].size() == 3:
+				print("game over!") 
 		
 		# Clear past click TODO might have to clear past click each time regardless if a clear spot was clicked
 		curr_adj_spots = []

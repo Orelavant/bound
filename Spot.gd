@@ -13,6 +13,8 @@ signal clicked(id)
 
 
 func _ready():
+	print("testing")
+	
 	# Connect signal to parent
 	get_parent().adj_spots_on.connect(adj_spot_on)
 	get_parent().adj_spots_off.connect(adj_spot_off)
